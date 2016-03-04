@@ -1,0 +1,14 @@
+<form name="usernameFrom">
+  <md-input-container class="md-block">
+    <label>Username</label>
+    <input name="username" ng-model="$ctrl.username" ng-change="$ctrl.onUserChange({username: $ctrl.username})" ng-model-options="{debounce: 500}" github-api-available github-user-not-exist required>
+    <div ng-messages="usernameFrom.username.$error">
+      <div ng-message="required">This is required.</div>
+      <div ng-message="githubApiAvailable">The Github api is unavailable.</div>
+      <div ng-message="notExist">Github user doesn't exist.</div>
+    </div>
+  </md-input-container>
+</form>
+<div ng-if="githubApiUA">The Github api is unavailable</div>
+<div ng-if="githubUserGone">The Github user has gone</div>
+<div ng-if="noRepos">This user has no public repositories</div>

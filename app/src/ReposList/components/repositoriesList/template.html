@@ -1,0 +1,4 @@
+<div>
+  <div ng-repeat="repo in $ctrl.list">{{repo.name}}</div>
+</div>
+<md-button ng-if="$ctrl.hasMoreRepos" class="md-raised md-primary" ng-click="$ctrl.loadMore()">Load more</md-button>

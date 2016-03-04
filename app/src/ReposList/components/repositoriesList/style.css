@@ -1,0 +1,7 @@
+github-repos-list {
+  overflow-y: scroll;
+}
+
+github-repos-list .md-primary {
+  margin: 20px 0 0 0;
+}

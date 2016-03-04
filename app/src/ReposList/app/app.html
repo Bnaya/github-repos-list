@@ -1,0 +1,13 @@
+<div flex layout="column">
+  <md-toolbar layout="row" class="md-whiteframe-z2">
+    <h1>Github repos list</h1>
+  </md-toolbar>
+
+    <md-content ng-controller="AppController" layout-padding layout="column" flex ng-cloak>
+      <user-input on-user-change="selectedUserChange(username)" /></user-input>
+      <div ng-if="githubApiUA">The Github api is unavailable</div>
+      <div ng-if="githubUserGone">The Github user has gone</div>
+      <div ng-if="noRepos">This user has no public repositories</div>
+      <github-repos-list no-more-repos="noMoreRepos" flex ng-if="reposList.length" list="reposList" on-load-more="loadMore()" /></github-repos-list>
+    </md-content>
+</div>

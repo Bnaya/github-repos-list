@@ -12,7 +12,7 @@ import material from 'angular-material'
 
 // Load custom application modules
 
-import main from 'app/main'
+import main from 'src/main'
 
 // Load loggers for injection and pre-angular debugging
 
