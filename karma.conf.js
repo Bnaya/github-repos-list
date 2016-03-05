@@ -22,7 +22,6 @@ module.exports = function(config){
     plugins : [
             'karma-jspm',
             'karma-chrome-launcher',
-            'karma-firefox-launcher',
             'karma-jasmine'
             ]
   });
