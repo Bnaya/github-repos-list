@@ -36,10 +36,7 @@
     "jspm": "^0.16.30",
     "karma": "~0.10",
     "karma-jspm": "^2.0.2",
-    "karma-junit-reporter": "^0.2.2",
-    "live-server": "^0.9.2",
-    "protractor": "^1.1.1",
-    "shelljs": "^0.2.6"
+    "live-server": "^0.9.2"
   },
   "scripts": {
     "start": "./node_modules/.bin/live-server app/",
