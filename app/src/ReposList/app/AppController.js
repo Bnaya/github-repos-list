@@ -12,11 +12,10 @@ class AppController {
     this.pageRequestId = null;
 
     this.scope.reposList = [];
-    this.scope.currentPage = 0;
+    this.currentPage = 0;
     this.scope.noMoreRepos = false;
     this.scope.noRepos = false;
     this.scope.githubApiUA = false;
-    this.scope.githubUserGone = false;
     this.scope.githubUserGone = false;
     this.scope.selectedUser = null;
   }
@@ -27,7 +26,7 @@ class AppController {
     }
 
     this.pageRequestId = Date.now();
-    this.githubUserService.repos(this.scope.selectedUser, ++this.scope.currentPage, PAGE_SIZE)
+    this.githubUserService.repos(this.scope.selectedUser, ++this.currentPage, PAGE_SIZE)
       .then(
         this.nextPageLoadedCallback.bind(this, this.pageRequestId),
         this.nextPageFailCallback.bind(this, this.pageRequestId)
@@ -36,18 +35,18 @@ class AppController {
 
   selectedUserChange(selectedUser) {
     this.pageRequestId = null;
-    this.scope.currentPage = 0;
+    this.currentPage = 0;
     this.scope.reposList = [];
     this.scope.noMoreRepos = false;
     this.loadingNextPage = false;
     this.scope.noRepos = false;
+    this.scope.selectedUser = selectedUser;
 
     // The user has dis-selected. clear the selection
     if (!selectedUser) {
       return;
     }
 
-    this.scope.selectedUser = selectedUser;
     this.loadNextPage();
   }
 
@@ -57,7 +56,7 @@ class AppController {
       return;
     }
 
-    --this.scope.currentPage;
+    --this.currentPage;
 
     // edgecase, when the validator passed but the user gone
     if (resp.status === 404) {
@@ -78,7 +77,7 @@ class AppController {
     this.scope.githubApiUA = false;
     this.scope.githubUserGone = false;
 
-    if (this.scope.currentPage === 1 && resp.data.length === 0) {
+    if (this.currentPage === 1 && resp.data.length === 0) {
       this.scope.noRepos = true;
 
       return;

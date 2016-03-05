@@ -2,20 +2,21 @@ import 'angular-mocks';
 import angular from 'angular';
 import GithubUserService from 'ReposList/services/GithubUser';
 
-let $httpBackend, serviceToTest;
-
-beforeEach(inject(function($injector) {
-  $httpBackend = $injector.get('$httpBackend');
-  serviceToTest = new GithubUserService($injector.get('$http'));
-}));
-
-afterEach(function() {
-  $httpBackend.verifyNoOutstandingExpectation();
-  $httpBackend.verifyNoOutstandingRequest();
-});
-
 
 describe('GithubUserService', function () {
+
+  let $httpBackend, serviceToTest;
+
+  beforeEach(inject(function($injector) {
+    $httpBackend = $injector.get('$httpBackend');
+    serviceToTest = new GithubUserService($injector.get('$http'));
+  }));
+
+  afterEach(function() {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+  });
+
   it('user() should fetch the proper user', function (done) {
     const userMock = {
       id: '123',

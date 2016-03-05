@@ -1,17 +1,15 @@
-function githubApiAvailable (githubUser) {
-
-
+function githubApiAvailable (githubUser, $q) {
   function link (scope, element, attrs, ngModel) {
     ngModel.$asyncValidators.githubApiAvailable = function (modelValue, viewValue) {
 
       return githubUser.user(viewValue).then(function () {
-        return Promise.resolve();
+        return $q.resolve();
       }, function (resp) {
         if (resp.status === 404) {
-          return Promise.resolve();
+          return $q.resolve();
         }
 
-        return Promise.reject();
+        return $q.reject();
       });
     }
   }
@@ -24,7 +22,8 @@ function githubApiAvailable (githubUser) {
 }
 
 githubApiAvailable.inject = [
-  'githubUser'
+  'githubUser',
+  '$q'
 ];
 
 export default githubApiAvailable;

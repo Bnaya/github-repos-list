@@ -7,7 +7,7 @@ module.exports = function(config){
     ],
     jspm: {
         loadFiles: [
-          'test/GithubUserService.spec.js'
+          'test/**/*'
         ],
         serveFiles: [
           './**/*'
