@@ -1,13 +1,17 @@
-function githubUserNotExist (githubUser) {
+function githubUserNotExist (githubUser, $q) {
 
 
   function link (scope, element, attrs, ngModel) {
     ngModel.$asyncValidators.notExist = function (modelValue, viewValue) {
 
       return githubUser.user(viewValue).then(function () {
-        return Promise.resolve();
-      }, function () {
-        return Promise.reject();
+        return $q.resolve();
+      }, function (resp) {
+        if (resp.status !== 404) {
+          return $q.resolve();
+        }
+
+        return $q.reject();
       });
     }
   }
@@ -20,7 +24,8 @@ function githubUserNotExist (githubUser) {
 }
 
 githubUserNotExist.inject = [
-  'githubUser'
+  'githubUser',
+  '$q'
 ];
 
 export default githubUserNotExist;
