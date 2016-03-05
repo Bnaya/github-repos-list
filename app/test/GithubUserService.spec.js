@@ -16,12 +16,31 @@ afterEach(function() {
 
 
 describe('GithubUserService', function () {
+  it('user() should fetch the proper user', function (done) {
+    const userMock = {
+      id: '123',
+      login: 'Bnaya'
+    };
+    let catchCalled = false;
 
-  it('user() should fetch the proper user', function () {
+    $httpBackend.expectRoute('GET', 'https://api.github.com/users/Bnaya').respond(function (method, url, data, headers, params) {
+      // expect(params.user).toBe('Bnaya');
 
-    $httpBackend.expect('GET', /https:\/\/api\.github\.com\/users\/Bnaya(\\?.*)?/).respond(200, {});
+      return [200, userMock];
+    });
 
-    serviceToTest.user('Bnaya');
+    serviceToTest.user('Bnaya')
+    .then(function (resp) {
+      expect(resp.status).toBe(200);
+      expect(resp.data).toEqual(userMock);
+    })
+    .catch(function () {
+      catchCalled = true;
+    })
+    .finally(function () {
+      expect(catchCalled).not.toBe(true);
+      done();
+    });
 
     $httpBackend.flush();
   });
@@ -29,7 +48,7 @@ describe('GithubUserService', function () {
   it('user() should fail when the request fails', function (done) {
     let thenCalled = false;
 
-    $httpBackend.expect('GET', /https:\/\/api\.github\.com\/users\/Bnaya(\\?.*)?/).respond(400, {});
+    $httpBackend.when('GET', /.*/).respond(400, {});
 
     serviceToTest.user('Bnaya')
     .then(function () {
@@ -40,6 +59,66 @@ describe('GithubUserService', function () {
       expect(error.data).toEqual({});
     })
     .finally(function () {
+      expect(thenCalled).not.toBe(true);
+      done();
+    });
+
+    $httpBackend.flush();
+  });
+
+  it('repos() should fetch the proper repos', function (done) {
+    const reposMock = [
+      {
+        "id": 7278106,
+        "name": "alps-H958-mods",
+      },
+      {
+        "id": 48592731,
+        "name": "builder",
+      }
+    ];
+
+    let catchCalled = false;
+
+    $httpBackend.expectRoute('GET', 'https://api.github.com/users/:user/repos').respond(function (method, url, data, headers, params) {
+      expect(params.page).toBe('1');
+      expect(params.per_page).toBe('5');
+      expect(params.user).toBe('Bnaya');
+
+      return [200, reposMock];
+    });
+
+    serviceToTest.repos('Bnaya', 1, 5)
+    .then(function (resp) {
+      expect(resp.status).toBe(200);
+      expect(resp.data).toEqual(reposMock);
+    })
+    .catch(function () {
+      catchCalled = true;
+    })
+    .finally(function () {
+      expect(catchCalled).not.toBe(true);
+      done();
+    });
+
+    $httpBackend.flush();
+  });
+
+  it('repos() should fail when the request fails', function (done) {
+    let thenCalled = false;
+
+    $httpBackend.when('GET', /.*/).respond(400, {});
+
+    serviceToTest.repos('Bnaya', 1, 5)
+    .then(function () {
+      thenCalled = true;
+    })
+    .catch(function (error) {
+      expect(error.status).toBe(400);
+      expect(error.data).toEqual({});
+    })
+    .finally(function () {
+      expect(thenCalled).not.toBe(true);
       done();
     });
 
